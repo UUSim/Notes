@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Notes</string>
+    <string name="note">Type here...</string>
+    <string name="notes"></string>
+    <string name="modified"></string>
+    <string name="popupArchived">Notitie is gearchiveerd</string>
+    <string name="popupEmpty">Notitie is nog leeg</string>
+    <string name="archiveButton">Archiveren</string>
+    <string name="sendButton">Versturen</string>
+</resources>
