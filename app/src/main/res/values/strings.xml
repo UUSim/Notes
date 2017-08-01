@@ -7,4 +7,9 @@
     <string name="popupEmpty">Notitie is nog leeg</string>
     <string name="archiveButton">Archiveren</string>
     <string name="sendButton">Versturen</string>
+    <string-array name="planets_array">
+    </string-array>
+
+    <string name="action_favorite">Action Favorite</string>
+    <string name="action_settings">Action Settings</string>
 </resources>

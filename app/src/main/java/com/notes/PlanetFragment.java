@@ -4,7 +4,7 @@ package com.notes;
  * Created by Simon on 30-07-17.
  */
 
-import android.os.Bundle;
+/*import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +24,12 @@ public class PlanetFragment extends Fragment {
         int num = bundle.getInt(ARG_PLANET_NUMBER);
 
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.activity_main, container, false);
+        //View v = inflater.inflate(R.layout.activity_main, container, false);
+        View v = inflater.inflate(R.layout.fragment_planet, container, false);
         TextView tvPlanet = (TextView)v.findViewById(R.id.tv_planet_title);
         tvPlanet.setText("Planet "+num);
 
         return v;
     }
 
-}
+}*/
