@@ -21,13 +21,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    // UI objects
-    private String[] mPlanetTitles;
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-
-
-
     // Data stores
     protected ArrayList<Note> mNotes = new ArrayList<>();
     protected Note mCurrentNote = null;
@@ -36,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     // Utility functions
     // *******************************
 
-    protected void showPopup(int viewId, int resourceStringId) {
+    protected void showPopup(int resourceStringId) {
+        int viewId = R.id.container;
         Snackbar.make(findViewById(viewId), resourceStringId,
                 Snackbar.LENGTH_SHORT)
                 .show();
@@ -76,23 +70,11 @@ public class MainActivity extends AppCompatActivity {
         // Load main_menu
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
-
-        /*mPlanetTitles = getResources().getStringArray(R.array.planets_array);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-        // Set the adapter for the list view
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.activity_main, mPlanetTitles));
-        // Set the list's click listener
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());*/
-
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //From: https://stackoverflow.com/questions/35648913/how-to-set-menu-to-toolbar-in-android
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
@@ -105,9 +87,20 @@ public class MainActivity extends AppCompatActivity {
                 // User chose the "Settings" item, show the app settings UI...
                 return true;
 
-            case R.id.action_favorite:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
+            case R.id.action_archive:
+                // User chose the "Archive" action, archive the current note
+                this.archiveNote();
+                return true;
+
+            case R.id.action_send:
+                this.sendNote();
+                return true;
+
+            case R.id.action_copy:
+                this.showPopup(R.string.popupCopied);
+                return true;
+
+            case R.id.action_delete:
                 return true;
 
             default:
@@ -121,18 +114,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     /**  Called when the user taps the Archive button */
-    public void archiveNote(View view) {
+    public void archiveNote() {
         this.mCurrentNote.setText(this.getNote());
 
         if (this.mCurrentNote.isFilled()) {
             mNotes.add(this.mCurrentNote);
 
             // Show short popup that note has been archived
-            this.showPopup(view.getId(), R.string.popupArchived);
+            this.showPopup(R.string.popupArchived);
         }
         else {
             // Show short popup that note has been archived
-            this.showPopup(view.getId(), R.string.popupEmpty);
+            this.showPopup(R.string.popupEmpty);
         }
 
         this.startNewNote();
@@ -145,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /** Called when the user taps the Send button */
-    public void sendNote(View view) {
+    public void sendNote() {
         String note = this.getNote();
 
         if (note.length()>0) {
@@ -162,34 +155,12 @@ public class MainActivity extends AppCompatActivity {
             startActivity(sendIntent);
         }
         else {
-            this.showPopup(view.getId(), R.string.popupEmpty);
+            this.showPopup(R.string.popupEmpty);
         }
     }
 
-
-    /** Swaps fragments in the main content view */
-    /*private void selectItem(int position) {
-        // Create a new fragment and specify the planet to show based on position
-        Fragment fragment = new PlanetFragment();
-        Bundle args = new Bundle();
-        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-        fragment.setArguments(args);
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
-                .commit();
-
-        // Highlight the selected item, update the title, and close the drawer
-        mDrawerList.setItemChecked(position, true);
-        setTitle(mPlanetTitles[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);
-    }*/
-
     @Override
     public void setTitle(CharSequence title) {
-        //mTitle = title;
         getActionBar().setTitle(title);
     }
 
@@ -269,13 +240,6 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         this.saveData();
     }
-
-    /*private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
-        }
-    }*/
 }
 
 

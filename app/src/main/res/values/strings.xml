@@ -1,15 +1,16 @@
 <resources>
     <string name="app_name">Notes</string>
-    <string name="note">Type here...</string>
+    <string name="note">Type hier uw notitie...</string>
     <string name="notes"></string>
-    <string name="modified"></string>
+    <string name="modified">Nu</string>
     <string name="popupArchived">Notitie is gearchiveerd</string>
     <string name="popupEmpty">Notitie is nog leeg</string>
-    <string name="archiveButton">Archiveren</string>
-    <string name="sendButton">Versturen</string>
-    <string-array name="planets_array">
-    </string-array>
+    <string name="popupCopied">De notitie is gekopiëerd naar het klembord</string>
 
-    <string name="action_favorite">Action Favorite</string>
-    <string name="action_settings">Action Settings</string>
+    <!-- Menu items -->
+    <string name="action_archive">Archiveren</string>
+    <string name="action_copy">Kopiëren</string>
+    <string name="action_delete">Verwijderen...</string>
+    <string name="action_send">Versturen</string>
+    <string name="action_settings">Instellingen</string>
 </resources>

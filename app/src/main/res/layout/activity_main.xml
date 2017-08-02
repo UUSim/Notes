@@ -10,7 +10,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="69dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.12"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
@@ -18,8 +19,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:layout_weight="0.12" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/container"
@@ -47,16 +47,18 @@
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="47dp"
             android:ems="10"
             android:gravity="top|left"
             android:inputType="textMultiLine"
+            android:text="@string/note"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/archiveButton"
             tools:layout_constraintLeft_creator="1"
             tools:layout_constraintRight_creator="1"
-            tools:layout_constraintTop_creator="1" />
+            tools:layout_constraintTop_creator="1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.0" />
 
         <TextView
             android:id="@+id/modified"
@@ -64,32 +66,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
-            android:text="Nu"
+            android:text="@string/modified"
             app:layout_constraintBaseline_toBaselineOf="@+id/modifiedLabel"
             app:layout_constraintLeft_toRightOf="@+id/modifiedLabel" />
 
-        <Button
-            android:id="@+id/archiveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:onClick="archiveNote"
-            android:text="@string/archiveButton"
-            app:layout_constraintBaseline_toBaselineOf="@+id/sendButton"
-            app:layout_constraintRight_toLeftOf="@+id/sendButton" />
-
-        <Button
-            android:id="@+id/sendButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:onClick="sendNote"
-            android:text="@string/sendButton"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 </LinearLayout>
 
