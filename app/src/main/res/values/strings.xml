@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Notes</string>
-    <string name="note">Type hier uw notitie...</string>
+    <string name="defaultNote">Type hier uw notitie...</string>
     <string name="notes"></string>
     <string name="modified">Nu</string>
     <string name="popupArchived">Notitie is gearchiveerd</string>

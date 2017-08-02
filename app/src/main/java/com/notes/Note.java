@@ -1,5 +1,7 @@
 package com.notes;
 
+import android.content.res.Resources;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,7 +26,6 @@ public class Note implements Serializable{
         if (!this.mText.equals(newText)) {
             this.mText  = newText;
             this.updateTimeStamp();
-            //this.dirty = true;
         }
     }
 
@@ -32,13 +33,6 @@ public class Note implements Serializable{
         return (this.mText.length()>0);
     }
 
-    /*public boolean isDirty() {
-        return this.dirty;
-    }
-
-    public void clearDirty() {
-        this.dirty = false;
-    }*/
 
     /** Set the current timestamp in the 'modified' field */
     public void updateTimeStamp() {

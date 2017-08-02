@@ -3,16 +3,14 @@ package com.notes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.widget.DrawerLayout;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.support.design.widget.Snackbar;
 
@@ -82,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        this.updateNote();
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
@@ -111,12 +110,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    private void updateNote() {
+        String noteText = this.getNote();
+        if (!noteText.equals(getString(R.string.defaultNote))) {
+            this.mCurrentNote.setText(this.getNote());
+        }
+    }
 
     /**  Called when the user taps the Archive button */
     public void archiveNote() {
-        this.mCurrentNote.setText(this.getNote());
-
         if (this.mCurrentNote.isFilled()) {
             mNotes.add(this.mCurrentNote);
 
@@ -139,13 +141,11 @@ public class MainActivity extends AppCompatActivity {
 
     /** Called when the user taps the Send button */
     public void sendNote() {
-        String note = this.getNote();
-
-        if (note.length()>0) {
+        if (mCurrentNote.isFilled()) {
 
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, note);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, mCurrentNote.getText());
             sendIntent.setType("text/plain");
 
             // Optional: Send via WhatsApp
@@ -190,12 +190,6 @@ public class MainActivity extends AppCompatActivity {
     // *******************************
 
     protected void loadData() {
-        /*SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        //int defaultValue = getResources().getInteger(R.string.note);
-        String note = sharedPref.getString(getString(R.string.note), "Default...");
-        //this.setModified(timestamp);
-        this.setNote(note);*/
-
         // load tasks from preference
         SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
 
@@ -215,14 +209,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void saveData() {
-        // Save the note to preferences
-        /*SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(getString(R.string.note), this.getNote());
-        editor.apply();*/
-
-
-
         // From: https://stackoverflow.com/questions/7057845/save-arraylist-to-sharedpreferences
         // save the notes list to preference
         SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
