@@ -6,11 +6,14 @@
     <string name="popupArchived">Notitie is gearchiveerd</string>
     <string name="popupEmpty">Notitie is nog leeg</string>
     <string name="popupCopied">De notitie is gekopiëerd naar het klembord</string>
+    <string name="copyLabel">Notitie</string>
 
     <!-- Menu items -->
+    <string name="action_about">Over de app</string>
     <string name="action_archive">Archiveren</string>
     <string name="action_copy">Kopiëren</string>
     <string name="action_delete">Verwijderen...</string>
     <string name="action_send">Versturen</string>
     <string name="action_settings">Instellingen</string>
+    <string name="action_quit">Afsluiten</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.notes;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +43,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /* Exit the application if quit was pressed */
+        if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean("EXIT", false)) {
+            finish();
+        }
+
         setContentView(R.layout.activity_main);
 
         if (BuildConfig.DEBUG) {
@@ -84,30 +91,58 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
-                return true;
+                break;
 
             case R.id.action_archive:
                 // User chose the "Archive" action, archive the current note
                 this.archiveNote();
-                return true;
+                break;
 
             case R.id.action_send:
                 this.sendNote();
-                return true;
+                break;
 
             case R.id.action_copy:
+                // From: https://stackoverflow.com/questions/19253786/how-to-copy-text-to-clip-board-in-android
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText(getString(R.string.copyLabel), mCurrentNote.getText());
+                clipboard.setPrimaryClip(clip);
+
                 this.showPopup(R.string.popupCopied);
-                return true;
+                break;
 
             case R.id.action_delete:
-                return true;
+                break;
+
+            case R.id.action_quit:
+                this.quit();
+                break;
+
+            case R.id.action_about:
+                break;
 
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
+        return true;
+    }
+
+    /**
+     * Exits the application
+     */
+    private void quit() {
+        this.saveData();
+
+        // From: https://stackoverflow.com/questions/35081130/how-to-close-my-application-programmatically-in-android
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("EXIT", true);
+        startActivity(intent);
+
+        /* The above code finishes all the activities except for FirstActivity.
+        Then we need to finish the FirstActivity's Enter the below code in Firstactivity's oncreate */
     }
 
     private void updateNote() {

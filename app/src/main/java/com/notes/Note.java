@@ -1,7 +1,5 @@
 package com.notes;
 
-import android.content.res.Resources;
-
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
