@@ -16,4 +16,13 @@
     <string name="action_send">Versturen</string>
     <string name="action_settings">Instellingen</string>
     <string name="action_quit">Afsluiten</string>
+    <string name="title_activity_settings">Instellingen</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">Algemeen</string>
+
+    <string name="pref_title_onstartup_load_last_note">Vervolg notitie bij opstarten</string>
+    <string name="pref_description_onstartup_load_last_note">Open de recentst bewerkte notitie bij het opnenen van de app.</string>
 </resources>

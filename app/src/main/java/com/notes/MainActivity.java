@@ -91,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
+                Intent openSettingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                openSettingsIntent.putExtra( SettingsActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName() );
+                openSettingsIntent.putExtra( SettingsActivity.EXTRA_NO_HEADERS, true );
+                startActivity(openSettingsIntent);
                 break;
 
             case R.id.action_archive:
