@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -24,6 +25,7 @@ public class NoteEditActivity extends AppCompatActivity {
     // Data stores
     protected ArrayList<Note> mNotes = new ArrayList<>();
     protected Note mCurrentNote = null;
+    private static final String TAG = "NoteEditActivity";
 
     // *******************************
     // Utility functions
@@ -43,10 +45,12 @@ public class NoteEditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /* Exit the application if quit was pressed */
-        if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean("EXIT", false)) {
-            finish();
+        /* Open the selected note */
+        int openNoteIndex = -1;
+        if (getIntent().getExtras() != null) {
+            openNoteIndex =  getIntent().getExtras().getInt("OpenNoteIndex", -1);
         }
+        Log.i(TAG, "onCreate with note index: " + openNoteIndex);
 
         setContentView(R.layout.activity_note_edit);
 
@@ -66,7 +70,12 @@ public class NoteEditActivity extends AppCompatActivity {
             //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         this.loadData();
-        this.startNewNote();
+        if (openNoteIndex==-1) {
+            this.startNewNote();
+        }
+        else {
+            this.resumeNote(openNoteIndex);
+        }
 
 
         setContentView(R.layout.activity_note_edit);
@@ -176,6 +185,19 @@ public class NoteEditActivity extends AppCompatActivity {
         this.mCurrentNote = new Note(new String(), new Date());
         this.setNote(mCurrentNote.getText());
         this.setModified(mCurrentNote.getModifiedTimeStamp(this));
+    }
+
+    public void resumeNote(int noteIndex) {
+        if (mNotes.size()>noteIndex) {
+            Log.i(TAG, "Resuming note: " + noteIndex);
+            this.mCurrentNote = mNotes.get(noteIndex);
+            this.setNote(mCurrentNote.getText());
+            this.setModified(mCurrentNote.getModifiedTimeStamp(this));
+        } else {
+            Log.e(TAG, "Could not resume note: " + noteIndex);
+            this.startNewNote();
+            this.setNote("Could not open selected note");
+        }
     }
 
     /** Called when the user taps the Send button */

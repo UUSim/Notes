@@ -1,6 +1,7 @@
 package com.notes;
 
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,5 +39,12 @@ public class NoteListFragment extends ListFragment implements AdapterView.OnItem
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
         Toast.makeText(getActivity(), "Item: " + position, Toast.LENGTH_SHORT).show();
+        this.openNote(position);
+    }
+
+    private void openNote(int index) {
+        Intent openNoteIntent = new Intent(this.getActivity(), NoteEditActivity.class);
+        openNoteIntent.putExtra("OpenNoteIndex", index);
+        startActivity(openNoteIntent);
     }
 }
