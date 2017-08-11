@@ -1,12 +1,16 @@
 <resources>
     <string name="app_name">Notes</string>
     <string name="defaultNote">Type hier uw notitie...</string>
-    <string name="notes"></string>
+    <string name="notesStorageLabel">notesStorage</string>
     <string name="modified">Nu</string>
     <string name="popupArchived">Notitie is gearchiveerd</string>
     <string name="popupEmpty">Notitie is nog leeg</string>
     <string name="popupCopied">De notitie is gekopiëerd naar het klembord</string>
     <string name="copyLabel">Notitie</string>
+
+    <string name="prefix_today">Vandaag, om </string>
+    <string name="prefix_yesterday">Gisteren, om </string>
+    <string name="prefix_older">Langer geleden, op </string>
 
     <!-- Menu items -->
     <string name="action_about">Over de app</string>

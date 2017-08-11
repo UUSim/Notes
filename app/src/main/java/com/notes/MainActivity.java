@@ -23,8 +23,10 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
     // Data stores
     protected ArrayList<Note> mNotes = new ArrayList<>();
-    protected Note mCurrentNote = null;
 
+    public ArrayList<Note> getNotes() {
+        return mNotes;
+    }
     // *******************************
     // Utility functions
     // *******************************
@@ -48,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-        setContentView(R.layout.activity_main);
-
         if (BuildConfig.DEBUG) {
             // From: https://stackoverflow.com/questions/22332513/wake-and-unlock-android-phone-screen-when-compile-and-run-project
             // These flags cause the device screen to turn on (and bypass screen guard if possible) when launching.
@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
             //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         this.loadData();
-        this.startNewNote();
 
 
         setContentView(R.layout.activity_main);
@@ -87,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        this.updateNote();
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
@@ -99,23 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.action_archive:
                 // User chose the "Archive" action, archive the current note
-                this.archiveNote();
-                break;
-
-            case R.id.action_send:
-                this.sendNote();
-                break;
-
-            case R.id.action_copy:
-                // From: https://stackoverflow.com/questions/19253786/how-to-copy-text-to-clip-board-in-android
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText(getString(R.string.copyLabel), mCurrentNote.getText());
-                clipboard.setPrimaryClip(clip);
-
-                this.showPopup(R.string.popupCopied);
-                break;
-
-            case R.id.action_delete:
+                this.showPopup(R.string.popupArchived);
                 break;
 
             case R.id.action_quit:
@@ -149,81 +131,6 @@ public class MainActivity extends AppCompatActivity {
         Then we need to finish the FirstActivity's Enter the below code in Firstactivity's oncreate */
     }
 
-    private void updateNote() {
-        String noteText = this.getNote();
-        if (!noteText.equals(getString(R.string.defaultNote))) {
-            this.mCurrentNote.setText(this.getNote());
-        }
-    }
-
-    /**  Called when the user taps the Archive button */
-    public void archiveNote() {
-        if (this.mCurrentNote.isFilled()) {
-            mNotes.add(this.mCurrentNote);
-
-            // Show short popup that note has been archived
-            this.showPopup(R.string.popupArchived);
-        }
-        else {
-            // Show short popup that note has been archived
-            this.showPopup(R.string.popupEmpty);
-        }
-
-        this.startNewNote();
-    }
-
-    public void startNewNote() {
-        this.mCurrentNote = new Note(new String(), new Date());
-        this.setNote(mCurrentNote.getText());
-        this.setModified(mCurrentNote.getModifiedTimeStamp());
-    }
-
-    /** Called when the user taps the Send button */
-    public void sendNote() {
-        if (mCurrentNote.isFilled()) {
-
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, mCurrentNote.getText());
-            sendIntent.setType("text/plain");
-
-            // Optional: Send via WhatsApp
-            //sendIntent.setPackage("com.whatsapp");
-
-            // Go
-            startActivity(sendIntent);
-        }
-        else {
-            this.showPopup(R.string.popupEmpty);
-        }
-    }
-
-    @Override
-    public void setTitle(CharSequence title) {
-        getActionBar().setTitle(title);
-    }
-
-
-
-    // *******************************
-    // UI data functions
-    // *******************************
-
-    protected void setModified(String modified) {
-        TextView modifiedView = (TextView) findViewById(R.id.modified);
-        modifiedView.setText(modified);
-    }
-
-    protected void setNote(String text) {
-        EditText note = (EditText) findViewById(R.id.note);
-        note.setText(text);
-    }
-
-    protected String getNote() {
-        EditText note = (EditText) findViewById(R.id.note);
-        return note.getText().toString();
-    }
-
     // *******************************
     // Persistence functions
     // *******************************
@@ -233,11 +140,15 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
 
         try {
-            mNotes = (ArrayList<Note>) ObjectSerializer.deserialize(prefs.getString(getString(R.string.notes), ObjectSerializer.serialize(new ArrayList<Note>())));
+            mNotes = (ArrayList<Note>) ObjectSerializer.deserialize(prefs.getString(getString(R.string.notesStorageLabel), ObjectSerializer.serialize(new ArrayList<Note>())));
+
+            mNotes.add(new Note("test bla", new Date()));
+            mNotes.add(new Note("test 2 bla", new Date(117, 7, 9)));
+            mNotes.add(new Note("test 3 bla", new Date(85, 1, 1)));
 
             System.out.println("Overview of loaded notes:");
             for (Note note: mNotes) {
-                System.out.println(note.getModifiedTimeStamp() + " - " + note.getText());
+                System.out.println(note.getModifiedTimeStamp(this) + " - " + note.getText());
             }
             System.out.println("End of loaded notes.");
         } catch (IOException e) {
@@ -253,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         try {
-            editor.putString(getString(R.string.notes), ObjectSerializer.serialize(mNotes));
+            editor.putString(getString(R.string.notesStorageLabel), ObjectSerializer.serialize(mNotes));
         } catch (IOException e) {
             e.printStackTrace();
         }

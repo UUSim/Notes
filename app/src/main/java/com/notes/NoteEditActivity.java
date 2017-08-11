@@ -48,7 +48,7 @@ public class NoteEditActivity extends AppCompatActivity {
             finish();
         }
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_note_edit);
 
         if (BuildConfig.DEBUG) {
             // From: https://stackoverflow.com/questions/22332513/wake-and-unlock-android-phone-screen-when-compile-and-run-project
@@ -69,7 +69,7 @@ public class NoteEditActivity extends AppCompatActivity {
         this.startNewNote();
 
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_note_edit);
 
 
         // Load main_menu
@@ -91,7 +91,7 @@ public class NoteEditActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
-                Intent openSettingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                Intent openSettingsIntent = new Intent(NoteEditActivity.this, SettingsActivity.class);
                 openSettingsIntent.putExtra( SettingsActivity.EXTRA_SHOW_FRAGMENT, SettingsActivity.GeneralPreferenceFragment.class.getName() );
                 openSettingsIntent.putExtra( SettingsActivity.EXTRA_NO_HEADERS, true );
                 startActivity(openSettingsIntent);
@@ -140,7 +140,7 @@ public class NoteEditActivity extends AppCompatActivity {
         this.saveData();
 
         // From: https://stackoverflow.com/questions/35081130/how-to-close-my-application-programmatically-in-android
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), NoteEditActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("EXIT", true);
         startActivity(intent);
@@ -175,7 +175,7 @@ public class NoteEditActivity extends AppCompatActivity {
     public void startNewNote() {
         this.mCurrentNote = new Note(new String(), new Date());
         this.setNote(mCurrentNote.getText());
-        this.setModified(mCurrentNote.getModifiedTimeStamp());
+        this.setModified(mCurrentNote.getModifiedTimeStamp(this));
     }
 
     /** Called when the user taps the Send button */
@@ -233,11 +233,11 @@ public class NoteEditActivity extends AppCompatActivity {
         SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
 
         try {
-            mNotes = (ArrayList<Note>) ObjectSerializer.deserialize(prefs.getString(getString(R.string.notes), ObjectSerializer.serialize(new ArrayList<Note>())));
+            mNotes = (ArrayList<Note>) ObjectSerializer.deserialize(prefs.getString(getString(R.string.notesStorageLabel), ObjectSerializer.serialize(new ArrayList<Note>())));
 
             System.out.println("Overview of loaded notes:");
             for (Note note: mNotes) {
-                System.out.println(note.getModifiedTimeStamp() + " - " + note.getText());
+                System.out.println(note.getModifiedTimeStamp(this) + " - " + note.getText());
             }
             System.out.println("End of loaded notes.");
         } catch (IOException e) {
@@ -253,7 +253,7 @@ public class NoteEditActivity extends AppCompatActivity {
         SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         try {
-            editor.putString(getString(R.string.notes), ObjectSerializer.serialize(mNotes));
+            editor.putString(getString(R.string.notesStorageLabel), ObjectSerializer.serialize(mNotes));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,7 +1,11 @@
 package com.notes;
 
+import android.content.Context;
+import android.content.res.Resources;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Note implements Serializable{
@@ -37,9 +41,31 @@ public class Note implements Serializable{
         this.mModified = new Date();
     }
 
-    public String getModifiedTimeStamp() {
-        //"dd-MM-yyyy HH:mm:ss"
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
-        return simpleDateFormat.format(this.mModified);
+    public String getModifiedTimeStamp(Context context) {
+        Calendar now = Calendar.getInstance();
+        Calendar timeToCheck = Calendar.getInstance();
+        timeToCheck.setTime(this.mModified);
+        String modifiedFormat = "dd-MM-yyyy";
+        String prefix;
+
+        if(now.get(Calendar.YEAR) == timeToCheck.get(Calendar.YEAR) &&
+                now.get(Calendar.DAY_OF_YEAR) == timeToCheck.get(Calendar.DAY_OF_YEAR)) {
+            prefix = context.getString(R.string.prefix_today);
+            modifiedFormat = "HH:mm:ss";
+        }
+        else {
+            now.add(Calendar.DAY_OF_YEAR, -1);
+            if (now.get(Calendar.YEAR) == timeToCheck.get(Calendar.YEAR) &&
+                    now.get(Calendar.DAY_OF_YEAR) == timeToCheck.get(Calendar.DAY_OF_YEAR)) {
+                prefix = context.getString(R.string.prefix_yesterday);
+                modifiedFormat = "HH:mm";
+            }
+            else {
+                prefix = context.getString(R.string.prefix_older);
+            }
+        }
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(modifiedFormat);
+        return prefix + " " + simpleDateFormat.format(this.mModified);
     }
 }
