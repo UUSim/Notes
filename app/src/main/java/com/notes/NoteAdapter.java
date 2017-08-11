@@ -24,14 +24,14 @@ public class NoteAdapter extends ArrayAdapter<Note> {
 
     public NoteAdapter(Context context, int textViewResourceId, ArrayList<Note> items) {
         super(context, textViewResourceId, items);
-        System.out.println("Creating NoteAdapter");
+        //System.out.println("Creating NoteAdapter");
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder viewHolder;
         if (convertView == null) {
-            System.out.println("Inflating the view");
+            //System.out.println("Inflating the view");
             convertView = LayoutInflater.from(this.getContext())
                     .inflate(android.R.layout.simple_list_item_1, parent, false);
 
@@ -40,13 +40,13 @@ public class NoteAdapter extends ArrayAdapter<Note> {
 
             convertView.setTag(viewHolder);
         } else {
-            System.out.println("Reusing existing view");
+            //System.out.println("Reusing existing view");
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
         Note item = getItem(position);
         if (item!= null) {
-            System.out.println("Setting the view text");
+            //System.out.println("Setting the view text");
             // My layout has only one TextView
             // do whatever you want with your string and long
             viewHolder.itemView.setText(String.format("%s: %s", item.getModifiedTimeStamp(this.getContext()), item.getText()));

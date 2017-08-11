@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
+
     // Data stores
     protected ArrayList<Note> mNotes = new ArrayList<>();
 
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             // eliminating any juggling you need to do as your app transitions between states.
             //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
-        this.loadData();
+        mNotes = DataStore.loadNotes(this);
 
 
         setContentView(R.layout.activity_main);
@@ -119,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
      * Exits the application
      */
     private void quit() {
-        this.saveData();
+        DataStore.saveNotes(this, mNotes);
 
         // From: https://stackoverflow.com/questions/35081130/how-to-close-my-application-programmatically-in-android
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -135,42 +138,20 @@ public class MainActivity extends AppCompatActivity {
     // Persistence functions
     // *******************************
 
-    protected void loadData() {
-        // load tasks from preference
-        SharedPreferences prefs = this.getSharedPreferences("DataStore", Context.MODE_PRIVATE);
 
-        try {
-            mNotes = (ArrayList<Note>) ObjectSerializer.deserialize(prefs.getString(getString(R.string.notesStorageLabel), ObjectSerializer.serialize(new ArrayList<Note>())));
-
-            System.out.println("Overview of loaded notes:");
-            for (Note note: mNotes) {
-                System.out.println(note.getModifiedTimeStamp(this) + " - " + note.getText());
-            }
-            System.out.println("End of loaded notes.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    protected void saveData() {
-        // From: https://stackoverflow.com/questions/7057845/save-arraylist-to-sharedpreferences
-        // save the notes list to preference
-        SharedPreferences prefs = this.getSharedPreferences("DataStore", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        try {
-            editor.putString(getString(R.string.notesStorageLabel), ObjectSerializer.serialize(mNotes));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        editor.apply();
-    }
 
     @Override
     public void onPause() {
         super.onPause();
-        this.saveData();
+        Log.d(TAG, "onPause, saving data");
+        DataStore.saveNotes(this, mNotes);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume, loading data");
+        mNotes = DataStore.loadNotes(this);
     }
 }
 

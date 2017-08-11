@@ -15,16 +15,16 @@ public class NoteListFragment extends ListFragment implements AdapterView.OnItem
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        System.out.println("NoteListFragment::onCreateView enter");
+        //System.out.println("NoteListFragment::onCreateView enter");
         View view = inflater.inflate(R.layout.fragment_note_list, container, false);
-        System.out.println("NoteListFragment::onCreateView exit");
+        //System.out.println("NoteListFragment::onCreateView exit");
         return view;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        System.out.println("NoteListFragment::onActivityCreated");
+        //System.out.println("NoteListFragment::onActivityCreated");
 
         ArrayList<Note> notes = ((MainActivity)this.getActivity()).getNotes();
         NoteAdapter adapter = new NoteAdapter(
