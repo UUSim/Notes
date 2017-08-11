@@ -70,13 +70,6 @@ public class NoteEditActivity extends AppCompatActivity {
             //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         this.loadData();
-        if (openNoteIndex==-1) {
-            this.startNewNote();
-        }
-        else {
-            this.resumeNote(openNoteIndex);
-        }
-
 
         setContentView(R.layout.activity_note_edit);
 
@@ -84,6 +77,13 @@ public class NoteEditActivity extends AppCompatActivity {
         // Load main_menu
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+        if (openNoteIndex==-1) {
+            this.startNewNote();
+        }
+        else {
+            this.resumeNote(openNoteIndex);
+        }
     }
 
     @Override
@@ -191,6 +191,7 @@ public class NoteEditActivity extends AppCompatActivity {
         if (mNotes.size()>noteIndex) {
             Log.i(TAG, "Resuming note: " + noteIndex);
             this.mCurrentNote = mNotes.get(noteIndex);
+            Log.d(TAG, "Note: '" + mCurrentNote.getText() + "'");
             this.setNote(mCurrentNote.getText());
             this.setModified(mCurrentNote.getModifiedTimeStamp(this));
         } else {
@@ -252,7 +253,7 @@ public class NoteEditActivity extends AppCompatActivity {
 
     protected void loadData() {
         // load tasks from preference
-        SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences prefs = this.getSharedPreferences("DataStore", Context.MODE_PRIVATE);
 
         try {
             mNotes = (ArrayList<Note>) ObjectSerializer.deserialize(prefs.getString(getString(R.string.notesStorageLabel), ObjectSerializer.serialize(new ArrayList<Note>())));
@@ -272,7 +273,7 @@ public class NoteEditActivity extends AppCompatActivity {
     protected void saveData() {
         // From: https://stackoverflow.com/questions/7057845/save-arraylist-to-sharedpreferences
         // save the notes list to preference
-        SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences prefs = this.getSharedPreferences("DataStore", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         try {
             editor.putString(getString(R.string.notesStorageLabel), ObjectSerializer.serialize(mNotes));

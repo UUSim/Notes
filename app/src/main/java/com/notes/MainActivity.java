@@ -137,14 +137,10 @@ public class MainActivity extends AppCompatActivity {
 
     protected void loadData() {
         // load tasks from preference
-        SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences prefs = this.getSharedPreferences("DataStore", Context.MODE_PRIVATE);
 
         try {
             mNotes = (ArrayList<Note>) ObjectSerializer.deserialize(prefs.getString(getString(R.string.notesStorageLabel), ObjectSerializer.serialize(new ArrayList<Note>())));
-
-            mNotes.add(new Note("test bla", new Date()));
-            mNotes.add(new Note("test 2 bla", new Date(117, 7, 9)));
-            mNotes.add(new Note("test 3 bla", new Date(85, 1, 1)));
 
             System.out.println("Overview of loaded notes:");
             for (Note note: mNotes) {
@@ -161,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
     protected void saveData() {
         // From: https://stackoverflow.com/questions/7057845/save-arraylist-to-sharedpreferences
         // save the notes list to preference
-        SharedPreferences prefs = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences prefs = this.getSharedPreferences("DataStore", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         try {
             editor.putString(getString(R.string.notesStorageLabel), ObjectSerializer.serialize(mNotes));
