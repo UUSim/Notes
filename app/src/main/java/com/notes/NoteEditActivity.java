@@ -125,6 +125,7 @@ public class NoteEditActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_delete:
+                this.deleteNote();
                 break;
 
             case R.id.action_quit:
@@ -149,7 +150,7 @@ public class NoteEditActivity extends AppCompatActivity {
         DataStore.saveNotes(this, mNotes);
 
         // From: https://stackoverflow.com/questions/35081130/how-to-close-my-application-programmatically-in-android
-        Intent intent = new Intent(getApplicationContext(), NoteEditActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("EXIT", true);
         startActivity(intent);
@@ -163,6 +164,13 @@ public class NoteEditActivity extends AppCompatActivity {
         if (!noteText.equals(getString(R.string.defaultNote))) {
             this.mCurrentNote.setText(this.getNote());
         }
+    }
+
+    public void deleteNote() {
+        Intent deleteNoteIntent = new Intent(NoteEditActivity.this, MainActivity.class);
+        int currentNoteIndex = mNotes.indexOf(mCurrentNote);
+        deleteNoteIntent.putExtra("DeleteNoteIndex", currentNoteIndex);
+        startActivity(deleteNoteIntent);
     }
 
     /**  Called when the user taps the Archive button */

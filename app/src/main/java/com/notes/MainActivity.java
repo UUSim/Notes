@@ -48,9 +48,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /* Exit the application if quit was pressed */
-        if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean("EXIT", false)) {
-            finish();
+
+        int deleteNoteIndex = -1;
+
+        if (getIntent().getExtras() != null) {
+            if (getIntent().getExtras().getBoolean("EXIT", false)) {
+                /* Exit the application if quit was pressed */
+                finish();
+            }
+
+            deleteNoteIndex = getIntent().getExtras().getInt("DeleteNoteIndex", -1);
         }
 
         if (BuildConfig.DEBUG) {
@@ -69,6 +76,14 @@ public class MainActivity extends AppCompatActivity {
             //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
         mNotes = DataStore.loadNotes(this);
+        if (deleteNoteIndex>=0 && deleteNoteIndex < mNotes.size()) {
+            Log.i(TAG, "Deleted note: " + deleteNoteIndex);
+            mNotes.remove(deleteNoteIndex);
+        }
+        if (mNotes.size()==0) {
+            mNotes.add(new Note("Start nieuwe notitie", new Date()));
+        }
+        DataStore.saveNotes(this, mNotes);
 
 
         setContentView(R.layout.activity_main);
