@@ -90,7 +90,7 @@ public class NoteEditActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         //From: https://stackoverflow.com/questions/35648913/how-to-set-menu-to-toolbar-in-android
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.note_edit_menu, menu);
         return true;
     }
 
@@ -191,6 +191,7 @@ public class NoteEditActivity extends AppCompatActivity {
 
     public void startNewNote() {
         this.mCurrentNote = new Note(new String(), new Date());
+        mNotes.add(this.mCurrentNote);
         this.setNote(mCurrentNote.getText());
         this.setModified(mCurrentNote.getModifiedTimeStamp(this));
     }

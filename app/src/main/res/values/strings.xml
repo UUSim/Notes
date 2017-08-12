@@ -17,6 +17,7 @@
     <string name="action_archive">Archiveren</string>
     <string name="action_copy">Kopiëren</string>
     <string name="action_delete">Verwijderen...</string>
+    <string name="action_new">Nieuwe notitie</string>
     <string name="action_send">Versturen</string>
     <string name="action_settings">Instellingen</string>
     <string name="action_quit">Afsluiten</string>

@@ -79,12 +79,8 @@ public class MainActivity extends AppCompatActivity {
         if (deleteNoteIndex>=0 && deleteNoteIndex < mNotes.size()) {
             Log.i(TAG, "Deleted note: " + deleteNoteIndex);
             mNotes.remove(deleteNoteIndex);
+            DataStore.saveNotes(this, mNotes);
         }
-        if (mNotes.size()==0) {
-            mNotes.add(new Note("Start nieuwe notitie", new Date()));
-        }
-        DataStore.saveNotes(this, mNotes);
-
 
         setContentView(R.layout.activity_main);
 
@@ -113,9 +109,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(openSettingsIntent);
                 break;
 
-            case R.id.action_archive:
-                // User chose the "Archive" action, archive the current note
-                this.showPopup(R.string.popupArchived);
+            case R.id.action_new:
+                Intent newNoteIntent = new Intent(MainActivity.this, NoteEditActivity.class);
+                newNoteIntent.putExtra("OpenNoteIndex", -1);
+                startActivity(newNoteIntent);
                 break;
 
             case R.id.action_quit:
