@@ -154,6 +154,7 @@ public class NoteEditActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("EXIT", true);
         startActivity(intent);
+        finish();
 
         /* The above code finishes all the activities except for FirstActivity.
         Then we need to finish the FirstActivity's Enter the below code in Firstactivity's oncreate */
@@ -185,8 +186,9 @@ public class NoteEditActivity extends AppCompatActivity {
             // Show short popup that note has been archived
             this.showPopup(R.string.popupEmpty);
         }
+        finish();
 
-        this.startNewNote();
+        //this.startNewNote();
     }
 
     public void startNewNote() {
@@ -276,6 +278,7 @@ public class NoteEditActivity extends AppCompatActivity {
         Log.d(TAG, "onBackPressed, saving data");
         this.updateNote();
         DataStore.saveNotes(this, mNotes);
+        finish();
     }
 
     @Override
@@ -284,6 +287,7 @@ public class NoteEditActivity extends AppCompatActivity {
         Log.d(TAG, "onStop, saving data");
         this.updateNote();
         DataStore.saveNotes(this, mNotes);
+        finish();
     }
 }
 

@@ -12,6 +12,9 @@
     <string name="prefix_yesterday">Gisteren, om </string>
     <string name="prefix_older">Langer geleden, op </string>
 
+    <!-- General messages, shown in the GUI -->
+    <string name="info_no_notes">Er zijn geen notities</string>
+
     <!-- Menu items -->
     <string name="action_about">Over de app</string>
     <string name="action_archive">Archiveren</string>
